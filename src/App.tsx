@@ -1,0 +1,260 @@
+import { useState, useCallback, useEffect, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import Hero from './components/Hero/Hero';
+import ProblemSection from './components/ProblemSection/ProblemSection';
+import ArchitectureSection from './components/ArchitectureSection/ArchitectureSection';
+import CrowdManagement from './components/CrowdManagement/CrowdManagement';
+import AdaptiveTraffic from './components/TrafficManagement/AdaptiveTraffic';
+import SmartParking from './components/SmartParking/SmartParking';
+import GreenCorridor from './components/GreenCorridor/GreenCorridor';
+import RiverSafety from './components/RiverSafety/RiverSafety';
+import MissingPersons from './components/MissingPersons/MissingPersons';
+import { GISCommandCenter, CitizenApp } from './components/GISCommandCenter/GISComponents';
+import { FinalSection } from './components/FinalSections/FinalSections';
+import VoiceController from './components/VoiceController/VoiceController';
+import ChapterNavigation from './components/ChapterNavigation/ChapterNavigation';
+import { useVoice } from './hooks/useVoice';
+import { CHAPTERS } from './data/content';
+
+const SECTION_IDS = CHAPTERS.map(c => c.id);
+
+export default function App() {
+  const [started, setStarted] = useState(false);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [autoTour, setAutoTour] = useState(false);
+  
+  const currentSlideIndexRef = useRef(currentSlideIndex);
+  currentSlideIndexRef.current = currentSlideIndex;
+
+  const autoTourRef = useRef(autoTour);
+  autoTourRef.current = autoTour;
+
+  const activeSectionId = SECTION_IDS[currentSlideIndex] || 'hero';
+
+  const goToNextSlide = useCallback(() => {
+    setCurrentSlideIndex(prev => {
+      if (prev < SECTION_IDS.length - 1) {
+        return prev + 1;
+      }
+      return prev;
+    });
+  }, []);
+
+  const goToPrevSlide = useCallback(() => {
+    setCurrentSlideIndex(prev => {
+      if (prev > 0) {
+        return prev - 1;
+      }
+      return prev;
+    });
+  }, []);
+
+  const goToSlideById = useCallback((id: string) => {
+    const idx = SECTION_IDS.indexOf(id);
+    if (idx !== -1) {
+      setCurrentSlideIndex(idx);
+    }
+  }, []);
+
+  // Auto-advance to next slide when speech narration ends
+  const handleSectionEnd = useCallback((completedSectionId: string) => {
+    if (!autoTourRef.current) return;
+    const currentIndex = SECTION_IDS.indexOf(completedSectionId);
+    if (currentIndex !== -1 && currentIndex < SECTION_IDS.length - 1) {
+      // 1.8-second pause before advancing to next slide
+      setTimeout(() => {
+        if (autoTourRef.current) {
+          goToNextSlide();
+        }
+      }, 1800);
+    }
+  }, [goToNextSlide]);
+
+  const voice = useVoice(handleSectionEnd);
+
+  // When slide changes and experience is started, narrate it
+  useEffect(() => {
+    if (!started || voice.isMuted) return;
+    const t = setTimeout(() => {
+      voice.play(activeSectionId);
+    }, 400);
+    return () => clearTimeout(t);
+  }, [activeSectionId, started]);
+
+  const handleStart = useCallback(() => {
+    setStarted(true);
+    setTimeout(() => {
+      if (!voice.isMuted) voice.play('hero');
+    }, 800);
+  }, [voice]);
+
+  const toggleAutoTour = useCallback(() => {
+    setAutoTour(prev => {
+      const next = !prev;
+      if (next && voice.voiceState === 'idle' && !voice.isMuted) {
+        voice.play(activeSectionId);
+      }
+      return next;
+    });
+  }, [voice, activeSectionId]);
+
+  // ── Keyboard Slide Navigation (Spacebar & Arrow Keys) ──
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      if (e.code === 'Space' || e.key === ' ') {
+        e.preventDefault();
+        if (!started) {
+          handleStart();
+        } else if (e.shiftKey) {
+          goToPrevSlide();
+        } else {
+          goToNextSlide();
+        }
+      } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (!started) {
+          handleStart();
+        } else {
+          goToNextSlide();
+        }
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (started) {
+          goToPrevSlide();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [started, handleStart, goToNextSlide, goToPrevSlide]);
+
+  // Slide Component Resolver
+  const renderSlideContent = () => {
+    switch (activeSectionId) {
+      case 'hero':
+        return <Hero onStart={handleStart} />;
+      case 'problem':
+        return <ProblemSection />;
+      case 'architecture':
+        return <ArchitectureSection />;
+      case 'crowd':
+        return <CrowdManagement />;
+      case 'adaptive':
+        return <AdaptiveTraffic />;
+      case 'parking':
+        return <SmartParking />;
+      case 'corridor':
+        return <GreenCorridor />;
+      case 'river':
+        return <RiverSafety />;
+      case 'missing':
+        return <MissingPersons />;
+      case 'gis':
+        return <GISCommandCenter />;
+      case 'citizen':
+        return <CitizenApp />;
+      case 'final':
+        return <FinalSection />;
+      default:
+        return <Hero onStart={handleStart} />;
+    }
+  };
+
+  return (
+    <div className="h-screen w-screen overflow-hidden relative select-none bg-[#f8fafc] text-slate-900 flex flex-col justify-center items-center">
+      {/* ── Auto-Tour Status Banner ── */}
+      {started && autoTour && (
+        <div
+          className="fixed top-3 left-1/2 z-50 -translate-x-1/2 px-4 py-1.5 rounded-full glass border border-emerald-300 text-emerald-800 text-xs font-mono font-bold flex items-center gap-2 shadow-lg backdrop-blur-md animate-pulse"
+        >
+          <span className="w-2 h-2 rounded-full bg-emerald-500" />
+          <span>AUTO-PRESENTATION ACTIVE</span>
+          <button
+            onClick={toggleAutoTour}
+            className="ml-2 px-2 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[10px] cursor-pointer"
+          >
+            Pause
+          </button>
+        </div>
+      )}
+
+      {/* ── On-Screen Presentation Floating Bar ── */}
+      {started && (
+        <div className="fixed top-3 right-6 z-40 flex items-center gap-2 px-3 py-1 rounded-full glass border border-slate-200 text-xs font-mono text-slate-700 shadow-md backdrop-blur-md">
+          <span className="text-sky-700 font-black">
+            SLIDE {String(currentSlideIndex + 1).padStart(2, '0')} / {CHAPTERS.length}
+          </span>
+          <span className="text-slate-300">·</span>
+          <button
+            onClick={goToPrevSlide}
+            disabled={currentSlideIndex === 0}
+            className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-slate-700 font-bold"
+            title="Previous Slide (Shift+Space / Left Arrow)"
+          >
+            ◀
+          </button>
+          <button
+            onClick={goToNextSlide}
+            disabled={currentSlideIndex === CHAPTERS.length - 1}
+            className="px-2.5 py-0.5 rounded bg-sky-600 hover:bg-sky-700 text-white font-bold disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-sm"
+            title="Next Slide (Spacebar / Right Arrow)"
+          >
+            Next (SPACE) ▶
+          </button>
+        </div>
+      )}
+
+      {/* ── Pure 100vh Slide Viewport (Animated Slide Transitions) ── */}
+      <div className="w-full h-full flex flex-col justify-center items-center relative overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeSectionId}
+            initial={{ opacity: 0, scale: 0.98, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 1.02, y: -10 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full h-full flex flex-col justify-center items-center overflow-hidden"
+          >
+            {renderSlideContent()}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* ── Persistent Slide Navigation & Voice Controls ── */}
+      {started && (
+        <>
+          <ChapterNavigation
+            activeSection={activeSectionId}
+            onNavigate={goToSlideById}
+          />
+          <VoiceController
+            voiceState={voice.voiceState}
+            isSupported={voice.isSupported}
+            isMuted={voice.isMuted}
+            progress={voice.progress}
+            currentSection={voice.currentSection}
+            autoScroll={autoTour}
+            onPlay={() => voice.play(activeSectionId)}
+            onPause={voice.pause}
+            onResume={voice.resume}
+            onReplay={voice.replay}
+            onToggleMute={voice.toggleMute}
+            onToggleAutoScroll={toggleAutoTour}
+          />
+        </>
+      )}
+    </div>
+  );
+}
