@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Hero from './components/Hero/Hero';
 import ProblemSection from './components/ProblemSection/ProblemSection';
@@ -11,9 +11,7 @@ import RiverSafety from './components/RiverSafety/RiverSafety';
 import MissingPersons from './components/MissingPersons/MissingPersons';
 import { GISCommandCenter, CitizenApp } from './components/GISCommandCenter/GISComponents';
 import { FinalSection } from './components/FinalSections/FinalSections';
-import VoiceController from './components/VoiceController/VoiceController';
 import ChapterNavigation from './components/ChapterNavigation/ChapterNavigation';
-import { useVoice } from './hooks/useVoice';
 import { CHAPTERS } from './data/content';
 
 const SECTION_IDS = CHAPTERS.map(c => c.id);
@@ -22,12 +20,6 @@ export default function App() {
   const [started, setStarted] = useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [autoTour, setAutoTour] = useState(false);
-  
-  const currentSlideIndexRef = useRef(currentSlideIndex);
-  currentSlideIndexRef.current = currentSlideIndex;
-
-  const autoTourRef = useRef(autoTour);
-  autoTourRef.current = autoTour;
 
   const activeSectionId = SECTION_IDS[currentSlideIndex] || 'hero';
 
@@ -56,30 +48,14 @@ export default function App() {
     }
   }, []);
 
-  // Auto-advance to next slide when speech narration ends
-  const handleSectionEnd = useCallback((completedSectionId: string) => {
-    if (!autoTourRef.current) return;
-    const currentIndex = SECTION_IDS.indexOf(completedSectionId);
-    if (currentIndex !== -1 && currentIndex < SECTION_IDS.length - 1) {
-      // 1.8-second pause before advancing to next slide
-      setTimeout(() => {
-        if (autoTourRef.current) {
-          goToNextSlide();
-        }
-      }, 1800);
-    }
-  }, [goToNextSlide]);
-
-  const voice = useVoice(handleSectionEnd);
-
-  // When slide changes and experience is started, narrate it
+  // Optional timed auto-presentation (advance every 10s if toggled)
   useEffect(() => {
-    if (!started || voice.isMuted) return;
-    const t = setTimeout(() => {
-      voice.play(activeSectionId);
-    }, 400);
-    return () => clearTimeout(t);
-  }, [activeSectionId, started]);
+    if (!started || !autoTour) return;
+    const timer = setTimeout(() => {
+      goToNextSlide();
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [started, autoTour, currentSlideIndex, goToNextSlide]);
 
   const handleStart = useCallback(() => {
     setStarted(true);
@@ -87,20 +63,11 @@ export default function App() {
     setTimeout(() => {
       setCurrentSlideIndex(1);
     }, 400);
-    setTimeout(() => {
-      if (!voice.isMuted) voice.play('problem');
-    }, 900);
-  }, [voice]);
+  }, []);
 
   const toggleAutoTour = useCallback(() => {
-    setAutoTour(prev => {
-      const next = !prev;
-      if (next && voice.voiceState === 'idle' && !voice.isMuted) {
-        voice.play(activeSectionId);
-      }
-      return next;
-    });
-  }, [voice, activeSectionId]);
+    setAutoTour(prev => !prev);
+  }, []);
 
   // ── Keyboard Slide Navigation (Spacebar & Arrow Keys) ──
   useEffect(() => {
@@ -177,15 +144,18 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden relative select-none bg-[#f8fafc] text-slate-900 flex flex-col justify-center items-center" style={{ height: '100dvh' }}>
+    <div
+      className="h-screen w-screen overflow-hidden relative select-none bg-[#f8fafc] text-slate-900 flex flex-col justify-start sm:justify-center items-center"
+      style={{ height: '100dvh' }}
+    >
       {/* ── Auto-Tour Status Banner ── */}
       {started && autoTour && (
         <div
-          className="fixed top-3 left-1/2 z-50 -translate-x-1/2 px-3 py-1 rounded-full glass border border-emerald-300 text-emerald-800 text-[10px] sm:text-xs font-mono font-bold flex items-center gap-1.5 shadow-lg backdrop-blur-md animate-pulse max-w-[90vw]"
+          className="fixed top-3 left-3 sm:left-6 z-50 px-3 py-1 rounded-full glass border border-emerald-300 text-emerald-800 text-[10px] sm:text-xs font-mono font-bold flex items-center gap-1.5 shadow-lg backdrop-blur-md animate-pulse max-w-[90vw]"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
-          <span className="hidden sm:inline">AUTO-PRESENTATION ACTIVE</span>
-          <span className="sm:hidden">AUTO</span>
+          <span className="hidden sm:inline">AUTO-SLIDES ACTIVE (10s)</span>
+          <span className="sm:hidden">AUTO (10s)</span>
           <button
             onClick={toggleAutoTour}
             className="ml-1 px-1.5 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[9px] cursor-pointer"
@@ -197,15 +167,15 @@ export default function App() {
 
       {/* ── On-Screen Presentation Floating Bar ── */}
       {started && (
-        <div className="fixed top-3 right-3 sm:right-6 z-40 flex items-center gap-1.5 px-2 sm:px-3 py-1 rounded-full glass border border-slate-200 text-xs font-mono text-slate-700 shadow-md backdrop-blur-md">
-          <span className="text-sky-700 font-black text-[10px] sm:text-xs">
-            {String(currentSlideIndex + 1).padStart(2, '0')}<span className="hidden sm:inline"> / {CHAPTERS.length}</span>
+        <div className="fixed top-3 right-3 sm:right-6 z-50 flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full glass border border-slate-200 text-xs font-mono text-slate-700 shadow-md backdrop-blur-md">
+          <span className="text-sky-700 font-black text-[11px] sm:text-xs">
+            {String(currentSlideIndex + 1).padStart(2, '0')}<span className="text-slate-400 font-normal"> / {CHAPTERS.length}</span>
           </span>
           <span className="text-slate-300">·</span>
           <button
             onClick={goToPrevSlide}
             disabled={currentSlideIndex === 0}
-            className="px-1.5 sm:px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-slate-700 font-bold text-xs"
+            className="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-slate-700 font-bold text-xs transition-all active:scale-95 border border-slate-200"
             title="Previous Slide"
           >
             ◀
@@ -213,17 +183,18 @@ export default function App() {
           <button
             onClick={goToNextSlide}
             disabled={currentSlideIndex === CHAPTERS.length - 1}
-            className="px-2 sm:px-2.5 py-0.5 rounded bg-sky-600 hover:bg-sky-700 text-white font-bold disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-sm text-[10px] sm:text-xs"
+            className="px-3 py-1 rounded-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-black disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-md shadow-sky-500/25 ring-2 ring-sky-400/40 text-[11px] sm:text-xs flex items-center gap-1 transition-all active:scale-95"
             title="Next Slide"
           >
-            <span className="hidden sm:inline">Next (SPACE) </span>▶
+            <span className="hidden sm:inline">NEXT (SPACE)</span>
+            <span className="sm:hidden">NEXT</span>
+            <span className="text-sm font-black">▶</span>
           </button>
         </div>
       )}
 
-
-      {/* ── Pure 100vh Slide Viewport (Animated Slide Transitions) ── */}
-      <div className="w-full h-full flex flex-col justify-center items-center relative overflow-hidden">
+      {/* ── Slide Viewport (Animated Transitions + Mobile Smooth Scroll) ── */}
+      <div className="w-full h-full flex flex-col justify-start sm:justify-center items-center relative overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeSectionId}
@@ -231,35 +202,23 @@ export default function App() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 1.02, y: -10 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full h-full flex flex-col justify-center items-center overflow-hidden"
+            className="w-full h-full flex flex-col justify-start sm:justify-center items-center overflow-y-auto sm:overflow-hidden min-h-0"
           >
             {renderSlideContent()}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* ── Persistent Slide Navigation & Voice Controls ── */}
+      {/* ── Persistent Slide Navigation ── */}
       {started && (
-        <>
-          <ChapterNavigation
-            activeSection={activeSectionId}
-            onNavigate={goToSlideById}
-          />
-          <VoiceController
-            voiceState={voice.voiceState}
-            isSupported={voice.isSupported}
-            isMuted={voice.isMuted}
-            progress={voice.progress}
-            currentSection={voice.currentSection}
-            autoScroll={autoTour}
-            onPlay={() => voice.play(activeSectionId)}
-            onPause={voice.pause}
-            onResume={voice.resume}
-            onReplay={voice.replay}
-            onToggleMute={voice.toggleMute}
-            onToggleAutoScroll={toggleAutoTour}
-          />
-        </>
+        <ChapterNavigation
+          activeSection={activeSectionId}
+          onNavigate={goToSlideById}
+          onNext={goToNextSlide}
+          onPrev={goToPrevSlide}
+          canNext={currentSlideIndex < CHAPTERS.length - 1}
+          canPrev={currentSlideIndex > 0}
+        />
       )}
     </div>
   );

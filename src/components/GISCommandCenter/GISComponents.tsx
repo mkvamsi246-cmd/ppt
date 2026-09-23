@@ -30,7 +30,7 @@ export function GISCommandCenter() {
 
   return (
     <SectionWrapper id="gis">
-      <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col justify-between py-2">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 w-full flex-1 flex flex-col justify-start sm:justify-between gap-3 py-1 sm:py-2">
         <SectionHeader
           number="10 / OPERATIONAL PORTALS"
           title="Admin & Officer Command Portals"
@@ -39,45 +39,48 @@ export function GISCommandCenter() {
         />
 
         {/* ── Main Portal Switcher Tabs ── */}
-        <div className="flex justify-center mb-3">
-          <div className="glass p-1.5 rounded-2xl flex flex-wrap gap-2 border border-slate-200 bg-white/95 shadow-sm">
+        <div className="flex justify-center mb-2">
+          <div className="glass p-1 sm:p-1.5 rounded-xl sm:rounded-2xl flex flex-wrap gap-1 sm:gap-2 border border-slate-200 bg-white/95 shadow-sm justify-center">
             <button
               id="tab-admin-portal"
               onClick={() => setActivePortalTab('admin')}
-              className={`px-4 py-2 rounded-xl font-bold text-xs md:text-sm tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-[11px] sm:text-xs md:text-sm tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
                 activePortalTab === 'admin'
                   ? 'bg-sky-600 text-white shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <span>🏛️</span>
-              <span>ADMIN COMMAND PORTAL</span>
+              <span className="hidden xs:inline">ADMIN COMMAND</span>
+              <span className="xs:hidden">ADMIN</span>
             </button>
 
             <button
               id="tab-officer-portal"
               onClick={() => setActivePortalTab('officer')}
-              className={`px-4 py-2 rounded-xl font-bold text-xs md:text-sm tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-[11px] sm:text-xs md:text-sm tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
                 activePortalTab === 'officer'
                   ? 'bg-amber-600 text-white shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <span>📱</span>
-              <span>OFFICER FIELD PORTAL</span>
+              <span className="hidden xs:inline">OFFICER FIELD</span>
+              <span className="xs:hidden">OFFICER</span>
             </button>
 
             <button
               id="tab-workflow"
               onClick={() => setActivePortalTab('workflow')}
-              className={`px-4 py-2 rounded-xl font-bold text-xs md:text-sm tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-[11px] sm:text-xs md:text-sm tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
                 activePortalTab === 'workflow'
                   ? 'bg-emerald-600 text-white shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <span>🔄</span>
-              <span>CLOSED-LOOP PIPELINE</span>
+              <span className="hidden xs:inline">CLOSED-LOOP</span>
+              <span className="xs:hidden">PIPELINE</span>
             </button>
           </div>
         </div>
@@ -349,14 +352,14 @@ export function CitizenApp() {
 
   return (
     <SectionWrapper id="citizen">
-      <div className="max-w-6xl mx-auto px-6 w-full flex-1 flex flex-col justify-between py-2">
+      <div className="max-w-6xl mx-auto px-2.5 sm:px-6 w-full flex-1 flex flex-col justify-start sm:justify-between gap-3 py-1 sm:py-2">
         <SectionHeader
           number="11 / CITIZEN MOBILE APPLICATION"
           title="Pilgrim Mobile Experience & Free Ghat Finder"
           subtitle="Real-time public intelligence in pilgrims' hands — live Ghat freeness meters, smart diversions, and emergency contacts."
           color="#0284c7"
         />
-        <div className="grid md:grid-cols-12 gap-8 items-center my-2">
+        <div className="grid md:grid-cols-12 gap-4 sm:gap-8 items-center my-1 sm:my-2">
           {/* Phone mockup */}
           <div className="md:col-span-5 flex justify-center">
             <div

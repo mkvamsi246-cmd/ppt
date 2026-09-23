@@ -22,7 +22,7 @@ export default function GreenCorridor() {
 
   return (
     <SectionWrapper id="corridor">
-      <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col justify-between py-2">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 w-full flex-1 flex flex-col justify-start sm:justify-between gap-3 py-1 sm:py-2">
         <SectionHeader
           number="07 / EMERGENCY MEDICAL TRANSIT"
           title="Green Corridor Traffic Signal Preemption"
@@ -31,31 +31,31 @@ export default function GreenCorridor() {
         />
 
         {/* ── 4-Stage Workflow Chain ── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 my-1 sm:my-2">
           {corridorSteps.map((item) => (
             <div
               key={item.step}
-              className="glass rounded-2xl p-3.5 border border-slate-200 bg-white/95 shadow-sm flex items-center gap-3"
+              className="glass rounded-2xl p-2.5 sm:p-3.5 border border-slate-200 bg-white/95 shadow-sm flex items-center gap-2.5 sm:gap-3"
             >
               <div
-                className="w-10 h-10 rounded-xl font-mono text-sm font-bold flex items-center justify-center flex-shrink-0"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl font-mono text-xs sm:text-sm font-bold flex items-center justify-center flex-shrink-0"
                 style={{ background: item.bg, color: item.color, border: `1px solid ${item.color}40` }}
               >
                 {item.step}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-bold text-slate-900 text-sm truncate flex items-center gap-1.5">
+                <div className="font-bold text-slate-900 text-xs sm:text-sm truncate flex items-center gap-1.5">
                   <span>{item.icon}</span>
-                  <span>{item.title}</span>
+                  <span className="truncate">{item.title}</span>
                 </div>
-                <div className="text-xs text-slate-600 truncate leading-snug">{item.desc}</div>
+                <div className="text-[11px] sm:text-xs text-slate-600 truncate leading-snug">{item.desc}</div>
               </div>
             </div>
           ))}
         </div>
 
         {/* ── Main 2-Column Dashboard ── */}
-        <div className="grid lg:grid-cols-12 gap-5 items-stretch my-2">
+        <div className="grid lg:grid-cols-12 gap-3 sm:gap-5 items-stretch my-1 sm:my-2">
           {/* Left Column: Animated Green Wave Corridor Schematic */}
           <div className="lg:col-span-7 glass rounded-2xl p-4 border border-slate-200 bg-white/95 shadow-md flex flex-col justify-between space-y-3">
             <div>

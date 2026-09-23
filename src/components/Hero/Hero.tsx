@@ -207,7 +207,7 @@ export default function Hero({ onStart }: HeroProps) {
 
       {/* ═══════════════ MAIN CONTENT ═══════════════ */}
       <motion.div
-        className="relative z-20 flex flex-col items-center justify-between text-center px-4 sm:px-6 max-w-6xl mx-auto w-full h-full max-h-full overflow-y-auto sm:overflow-hidden hide-scrollbar pb-16 sm:pb-0 py-2"
+        className="relative z-20 flex flex-col items-center justify-start sm:justify-between text-center px-2.5 sm:px-6 max-w-6xl mx-auto w-full h-full overflow-y-auto sm:overflow-hidden hide-scrollbar pt-12 sm:pt-3 pb-24 sm:pb-2 gap-2 sm:gap-3"
         animate={
           launchPhase === 'zoom'
             ? { scale: 1.1, opacity: 0.55 }
@@ -222,16 +222,16 @@ export default function Hero({ onStart }: HeroProps) {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 border border-sky-200 shadow-xs"
+          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-sky-50 border border-sky-200 shadow-xs"
         >
-          <span className="w-2.5 h-2.5 rounded-full bg-sky-600 animate-pulse" />
-          <span className="font-mono text-xs md:text-sm tracking-widest text-sky-900 uppercase font-black">
+          <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-sky-600 animate-pulse" />
+          <span className="font-mono text-[10px] sm:text-xs md:text-sm tracking-widest text-sky-900 uppercase font-black">
             RAJAHMUNDRY SMART PUSHKARALU 2027
           </span>
         </motion.div>
 
         {/* PUSHKARALU letter tiles */}
-        <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2.5 my-2" aria-label="PUSHKARALU">
+        <div className="flex flex-wrap justify-center gap-1 sm:gap-2.5 my-1 sm:my-2" aria-label="PUSHKARALU">
           {PUSHKARALU_ACRONYM.map((item, i) => {
             const isSelected = activeLetterIdx === i;
             return (
@@ -258,7 +258,7 @@ export default function Hero({ onStart }: HeroProps) {
                   setIsAutoCycling(false);
                   setActiveLetterIdx(i);
                 }}
-                className={`relative px-3 sm:px-4 py-2 rounded-2xl transition-all cursor-pointer font-display font-black text-3xl sm:text-5xl md:text-6xl ${
+                className={`relative px-2 sm:px-4 py-1 sm:py-2 rounded-xl sm:rounded-2xl transition-all cursor-pointer font-display font-black text-2xl sm:text-5xl md:text-6xl min-w-[30px] sm:min-w-[48px] ${
                   isSelected
                     ? 'scale-105 shadow-lg bg-white border-2'
                     : 'bg-white/90 hover:bg-white border border-slate-200 shadow-xs'

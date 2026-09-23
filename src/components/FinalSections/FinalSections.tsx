@@ -14,24 +14,24 @@ const STATS = [
 export function FinalSection() {
   return (
     <SectionWrapper id="final">
-      <div className="max-w-7xl mx-auto px-6 w-full flex flex-col justify-between h-full py-2 text-center">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 w-full flex-1 flex flex-col justify-start sm:justify-between gap-3 h-full py-1 sm:py-2 text-center">
 
         {/* Section label */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-sky-50 border border-sky-200 self-center"
+          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1 rounded-full bg-sky-50 border border-sky-200 self-center"
         >
           <span className="w-2 h-2 rounded-full bg-sky-600 animate-pulse" />
-          <span className="font-mono text-[11px] tracking-widest text-sky-900 uppercase font-black">
+          <span className="font-mono text-[10px] sm:text-[11px] tracking-widest text-sky-900 uppercase font-black">
             12 / GOVERNANCE &amp; PROJECT IMPACT
           </span>
         </motion.div>
 
         {/* ── UNITED PUSHKARALU letters ── */}
         <div className="flex flex-col items-center gap-2 my-1">
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3" aria-label="PUSHKARALU">
+          <div className="flex flex-wrap justify-center gap-1.5 sm:gap-3" aria-label="PUSHKARALU">
             {PUSHKARALU_ACRONYM.map((item, i) => (
               <motion.div
                 key={i}
@@ -53,7 +53,7 @@ export function FinalSection() {
                 className="relative flex flex-col items-center"
               >
                 <motion.div
-                  className="px-2.5 sm:px-3.5 py-2 rounded-2xl font-display font-black text-3xl sm:text-5xl bg-white shadow-lg border-2 flex items-center justify-center"
+                  className="px-2 sm:px-3.5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl font-display font-black text-2xl sm:text-4xl md:text-5xl bg-white shadow-lg border-2 flex items-center justify-center min-w-[36px] sm:min-w-[48px]"
                   style={{ color: item.color, borderColor: item.color }}
                   animate={{
                     boxShadow: [
@@ -102,7 +102,7 @@ export function FinalSection() {
         </div>
 
         {/* ── Impact Stats ── */}
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-2.5 my-1">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-2.5 my-1">
           {STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -126,12 +126,12 @@ export function FinalSection() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.8 }}
-          className="glass rounded-2xl p-3 border border-slate-200 bg-white/95 shadow-sm"
+          className="glass rounded-2xl p-2.5 sm:p-3 border border-slate-200 bg-white/95 shadow-sm"
         >
-          <div className="text-[10px] font-mono text-sky-900 font-bold tracking-wider mb-2 uppercase">
+          <div className="text-[10px] font-mono text-sky-900 font-bold tracking-wider mb-1.5 sm:mb-2 uppercase">
             Ethical AI &amp; Human-in-the-Loop Safeguards
           </div>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-1.5 sm:gap-2">
             {ETHICS_PRINCIPLES.map((p, i) => (
               <motion.div
                 key={p.label}

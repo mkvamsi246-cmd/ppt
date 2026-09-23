@@ -5,7 +5,7 @@ import { ARCHITECTURE_LAYERS, SENSE_CHAIN } from '../../data/content';
 export default function ArchitectureSection() {
   return (
     <SectionWrapper id="architecture">
-      <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col justify-between py-2">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 w-full flex-1 flex flex-col justify-start sm:justify-between gap-3 py-1 sm:py-2">
         <SectionHeader
           number="03 / COMPLETE SYSTEM ARCHITECTURE"
           title="Four-Tier Intelligent Technology Stack"
@@ -14,7 +14,7 @@ export default function ArchitectureSection() {
         />
 
         {/* 4 Architecture Layers Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 my-1 sm:my-2">
           {ARCHITECTURE_LAYERS.map((layer, li) => (
             <motion.div
               key={layer.id}

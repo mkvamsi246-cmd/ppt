@@ -31,32 +31,6 @@ export const PUSHKARALU_ACRONYM = [
   { letter: 'U', title: 'Unified Response', desc: 'Police, medical, municipal & NDRF coordination', color: '#059669', icon: '⚡' },
 ];
 
-export const VOICE_SCRIPTS: Record<string, string> = {
-  hero: `Welcome to Rajahmundry Smart Pushkaralu 2027. PUSHKARALU represents a ten-pillar engineering framework connecting People Safety, Unified System, Smart Traffic, Health Support, Knowledge and AI, Alerts, River Rescue, Analytics, Location GIS, and Unified Response to protect over thirty million pilgrims.`,
-
-  problem: `In the 2015 Pushkaralu, manual blindspots caused fatal stampedes, gridlocked ambulances, and separated families. Our 2027 platform replaces manual reactions with automated AI predictions and instant multi-agency response.`,
-
-  architecture: `The system operates on four interconnected layers: physical IoT and CCTV sensors at the bottom, an AI analytics and computer vision engine, a unified GIS command dashboard, and coordinated multi-agency field outcomes.`,
-
-  crowd: `AI cameras continuously monitor crowd density across all ghats in real time. When high density is detected, the system immediately pushes an automated alert with GPS coordinates to the nearest on-duty officer in that sector to prevent stampedes.`,
-
-  adaptive: `Our IoT-enabled Adaptive Traffic Control System utilizes roadside inductive loops and ESP32 edge microcontrollers to dynamically balance traffic light timings, reducing intersection delays by forty-two percent.`,
-
-  parking: `The Smart Parking Management System enables pilgrims to monitor real-time parking slot availability near every ghat via the mobile app. Onsite, high-speed ANPR cameras detect vehicle number plates at the entrance gate and automatically assign a dedicated parking slot, opening the smart boom barrier in under two seconds.`,
-
-  corridor: `For critical medical emergencies, the Green Corridor system automatically clears traffic signals ahead of incoming ambulances, guaranteeing an eleven-minute transit to the government hospital.`,
-
-  river: `For river safety, AI thermal drones identify struggling swimmers in seconds and drop auto-inflating flotation pods, while rescue speedboats perform recovery within ninety seconds.`,
-
-  missing: `Our facial re-identification model scans five hundred and twenty CCTV streams, matching uploaded photos and smart wristband beacons to reunite lost children and elderly pilgrims in under seven minutes.`,
-
-  gis: `The operational portals provide synchronized control: the Admin Command Portal for city-wide GIS monitoring, AI early warnings, and Green Corridor overrides, and the Officer Field Portal giving ground police and medics GPS-guided dispatch and missing person verification.`,
-
-  citizen: `Pilgrims access live Ghat crowd meters, emergency SOS buttons, lost person reporting, and real-time parking navigation directly from their smartphone app.`,
-
-  final: `All operational commands remain with human commanders. By turning raw data into early warnings, Rajahmundry Smart Pushkaralu 2027 transforms mass pilgrimage safety into an intelligent, life-saving reality.`,
-};
-
 export const PROBLEM_NODES = [
   { id: 'crowd',   label: 'Crowded Ghats',       icon: '👥', x: 20, y: 20, color: '#ff6b35' },
   { id: 'traffic', label: 'Traffic Congestion',   icon: '🚦', x: 75, y: 20, color: '#ff6b35' },

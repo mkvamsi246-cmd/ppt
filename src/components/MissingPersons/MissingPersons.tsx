@@ -41,7 +41,7 @@ export default function MissingPersons() {
 
   return (
     <SectionWrapper id="missing">
-      <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col justify-between py-2">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 w-full flex-1 flex flex-col justify-start sm:justify-between gap-3 py-1 sm:py-2">
         <SectionHeader
           number="09 / AI MISSING PERSON & CHILD REUNIFICATION"
           title="AI Facial Re-ID & Smart Wristband Tracking"
@@ -50,34 +50,34 @@ export default function MissingPersons() {
         />
 
         {/* ── 4-Stage Workflow Chain ── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 my-1 sm:my-2">
           {reidWorkflow.map((item, i) => (
             <motion.div
               key={item.step}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
-              className="glass rounded-2xl p-3.5 border border-slate-200 bg-white/95 shadow-sm flex flex-col justify-between"
+              className="glass rounded-2xl p-2.5 sm:p-3.5 border border-slate-200 bg-white/95 shadow-sm flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-1.5 sm:mb-2">
                   <span
-                    className="text-xs font-mono font-bold px-2.5 py-1 rounded-md"
+                    className="text-xs font-mono font-bold px-2 py-0.5 rounded-md"
                     style={{ background: item.bg, color: item.color, border: `1px solid ${item.color}40` }}
                   >
                     {item.step}
                   </span>
-                  <span className="text-xl">{item.icon}</span>
+                  <span className="text-lg sm:text-xl">{item.icon}</span>
                 </div>
-                <h4 className="font-bold text-slate-900 text-sm mb-1">{item.title}</h4>
-                <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">{item.desc}</p>
+                <h4 className="font-bold text-slate-900 text-xs sm:text-sm mb-0.5 sm:mb-1">{item.title}</h4>
+                <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed line-clamp-2">{item.desc}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* ── Live Animated Facial Re-ID Canvas ── */}
-        <div className="rounded-2xl relative overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800 border border-slate-700 h-[180px] shadow-inner my-2">
+        <div className="rounded-2xl relative overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800 border border-slate-700 h-[160px] sm:h-[180px] shadow-inner my-1 sm:my-2">
           <svg width="100%" height="100%" viewBox="0 0 640 180">
             <defs>
               <radialGradient id="facePulse" cx="50%" cy="50%" r="50%">
@@ -197,7 +197,7 @@ export default function MissingPersons() {
         </div>
 
         {/* ── Interactive Command & Re-ID Simulation Panel ── */}
-        <div className="grid lg:grid-cols-12 gap-5 items-stretch my-2">
+        <div className="grid lg:grid-cols-12 gap-3 sm:gap-5 items-stretch my-1 sm:my-2">
           {/* Left Column: Active Cases */}
           <div className="lg:col-span-5 space-y-2.5 flex flex-col justify-between">
             <div className="flex items-center justify-between">

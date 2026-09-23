@@ -42,7 +42,7 @@ export default function SmartParking() {
 
   return (
     <SectionWrapper id="parking">
-      <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col justify-between py-2">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 w-full flex-1 flex flex-col justify-start sm:justify-between gap-3 py-1 sm:py-2">
         <SectionHeader
           number="06 / SMART PARKING & ANPR SYSTEM"
           title="AI Number Plate Detection & App Slot Guidance"
@@ -51,34 +51,34 @@ export default function SmartParking() {
         />
 
         {/* ── 4-Stage Workflow Architecture ── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 my-1 sm:my-2">
           {parkingWorkflow.map((item, i) => (
             <motion.div
               key={item.step}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
-              className="glass rounded-2xl p-4 border border-slate-200 bg-white/95 shadow-sm flex flex-col justify-between"
+              className="glass rounded-2xl p-2.5 sm:p-4 border border-slate-200 bg-white/95 shadow-sm flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-1.5 sm:mb-2">
                   <span
-                    className="text-xs font-mono font-bold px-2.5 py-1 rounded-md"
+                    className="text-xs font-mono font-bold px-2 py-0.5 rounded-md"
                     style={{ background: item.bg, color: item.color, border: `1px solid ${item.color}40` }}
                   >
                     PHASE {item.step}
                   </span>
-                  <span className="text-xl">{item.icon}</span>
+                  <span className="text-lg sm:text-xl">{item.icon}</span>
                 </div>
-                <h4 className="font-bold text-slate-900 text-sm mb-1">{item.title}</h4>
-                <p className="text-xs text-slate-600 leading-relaxed">{item.desc}</p>
+                <h4 className="font-bold text-slate-900 text-xs sm:text-sm mb-1">{item.title}</h4>
+                <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed">{item.desc}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* ── Live Animated ANPR Gate Canvas ── */}
-        <div className="rounded-2xl relative overflow-hidden bg-gradient-to-r from-slate-50 via-sky-50 to-slate-50 border border-slate-200 h-[185px] shadow-inner my-2">
+        <div className="rounded-2xl relative overflow-hidden bg-gradient-to-r from-slate-50 via-sky-50 to-slate-50 border border-slate-200 h-[160px] sm:h-[185px] shadow-inner my-1 sm:my-2">
           <svg width="100%" height="100%" viewBox="0 0 640 185">
             <defs>
               <linearGradient id="gateBg" x1="0" y1="0" x2="1" y2="0">
@@ -199,7 +199,7 @@ export default function SmartParking() {
         </div>
 
         {/* ── Interactive 2-Column Command Workspace ── */}
-        <div className="grid lg:grid-cols-12 gap-5 my-2 items-stretch">
+        <div className="grid lg:grid-cols-12 gap-3 sm:gap-5 my-1 sm:my-2 items-stretch">
           {/* Left Column: Ghat Parking Lots & Mobile App Live Sync */}
           <div className="lg:col-span-6 flex flex-col justify-between space-y-3">
             <div className="flex items-center justify-between">

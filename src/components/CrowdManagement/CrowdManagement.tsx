@@ -80,7 +80,7 @@ export default function CrowdManagement() {
 
   return (
     <SectionWrapper id="crowd">
-      <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col justify-between py-2">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 w-full flex-1 flex flex-col justify-start sm:justify-between gap-3 py-1 sm:py-2">
         <SectionHeader
           number="04 / CROWD MANAGEMENT MODULE"
           title="AI Camera Crowd Monitoring & Zone Officer Dispatch"
@@ -89,31 +89,31 @@ export default function CrowdManagement() {
         />
 
         {/* ── 4-Step Sequence Bar ── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 my-1 sm:my-2">
           {crowdWorkflow.map((item) => (
             <div
               key={item.step}
-              className="glass rounded-2xl p-3.5 border border-slate-200 flex items-center gap-3 bg-white/95 shadow-sm"
+              className="glass rounded-2xl p-2.5 sm:p-3.5 border border-slate-200 flex items-center gap-2.5 sm:gap-3 bg-white/95 shadow-sm"
             >
               <div
-                className="w-10 h-10 rounded-xl font-mono text-sm font-bold flex items-center justify-center flex-shrink-0"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl font-mono text-xs sm:text-sm font-bold flex items-center justify-center flex-shrink-0"
                 style={{ background: item.bg, color: item.color, border: `1px solid ${item.color}40` }}
               >
                 {item.step}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-bold text-slate-900 text-sm truncate flex items-center gap-1.5">
+                <div className="font-bold text-slate-900 text-xs sm:text-sm truncate flex items-center gap-1.5">
                   <span>{item.icon}</span>
-                  <span>{item.title}</span>
+                  <span className="truncate">{item.title}</span>
                 </div>
-                <div className="text-xs text-slate-600 truncate leading-snug">{item.desc}</div>
+                <div className="text-[11px] sm:text-xs text-slate-600 truncate leading-snug">{item.desc}</div>
               </div>
             </div>
           ))}
         </div>
 
         {/* ── Live AI Surveillance Animated Canvas ── */}
-        <div className="rounded-2xl relative overflow-hidden bg-gradient-to-b from-slate-50 to-sky-50 border border-slate-200 h-[190px] shadow-inner my-2">
+        <div className="rounded-2xl relative overflow-hidden bg-gradient-to-b from-slate-50 to-sky-50 border border-slate-200 h-[160px] sm:h-[190px] shadow-inner my-1 sm:my-2">
           <svg width="100%" height="100%" viewBox="0 0 640 190">
             <defs>
               <linearGradient id="crowdBg" x1="0" y1="0" x2="0" y2="1">
@@ -248,7 +248,7 @@ export default function CrowdManagement() {
         </div>
 
         {/* ── Main 2-Column Dashboard ── */}
-        <div className="grid lg:grid-cols-12 gap-5 items-stretch my-2">
+        <div className="grid lg:grid-cols-12 gap-3 sm:gap-5 items-stretch my-1 sm:my-2">
           {/* Left Column: AI Camera Surge & Nearest Officer Dispatch */}
           <div className="lg:col-span-6 glass rounded-2xl p-4 border border-slate-200 flex flex-col justify-between bg-white/95 shadow-md space-y-3">
             <div>

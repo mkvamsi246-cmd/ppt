@@ -53,7 +53,7 @@ export default function RiverSafety() {
 
   return (
     <SectionWrapper id="river">
-      <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col justify-between py-2">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 w-full flex-1 flex flex-col justify-start sm:justify-between gap-3 py-1 sm:py-2">
         <SectionHeader
           number="08 / RIVER SAFETY & WATER RESCUE"
           title="AI Drone & Speedboat Rapid Intercept"
@@ -62,37 +62,37 @@ export default function RiverSafety() {
         />
 
         {/* 4-Stage Response Chain */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 my-1 sm:my-2">
           {stages.map((st, i) => (
             <div
               key={st.num}
               onClick={() => setActiveStage(i)}
-              className={`p-3.5 rounded-2xl glass transition-all cursor-pointer ${
+              className={`p-2.5 sm:p-3.5 rounded-2xl glass transition-all cursor-pointer ${
                 activeStage === i
                   ? 'border-sky-500 bg-sky-50/95 shadow-md -translate-y-0.5 ring-2 ring-sky-400/20'
                   : 'border-slate-200 bg-white/90 hover:border-sky-300'
               }`}
             >
-              <div className="flex justify-between items-center mb-2">
+              <div className="flex justify-between items-center mb-1.5 sm:mb-2">
                 <span
-                  className="px-2.5 py-0.5 rounded text-xs font-mono font-bold"
+                  className="px-2 py-0.5 rounded text-xs font-mono font-bold"
                   style={{ background: st.bg, color: st.color, border: `1px solid ${st.color}40` }}
                 >
                   STAGE {st.num}
                 </span>
-                <span className="text-xl">{st.icon}</span>
+                <span className="text-lg sm:text-xl">{st.icon}</span>
               </div>
-              <h4 className="text-sm font-bold text-slate-900 mb-1">{st.title}</h4>
-              <div className="text-xs font-mono font-bold text-emerald-800 mb-1">Target: {st.time}</div>
-              <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">{st.desc}</p>
+              <h4 className="text-xs sm:text-sm font-bold text-slate-900 mb-0.5 sm:mb-1">{st.title}</h4>
+              <div className="text-[11px] sm:text-xs font-mono font-bold text-emerald-800 mb-0.5 sm:mb-1">Target: {st.time}</div>
+              <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed line-clamp-2">{st.desc}</p>
             </div>
           ))}
         </div>
 
         {/* Interactive Godavari River Live Scenario */}
-        <div className="grid md:grid-cols-12 gap-5 items-center my-2">
+        <div className="grid md:grid-cols-12 gap-3 sm:gap-5 items-center my-1 sm:my-2">
           {/* River Canvas SVG */}
-          <div className="md:col-span-8 rounded-2xl relative overflow-hidden bg-gradient-to-b from-sky-50 to-sky-100 border border-sky-200 h-[210px] shadow-inner">
+          <div className="md:col-span-8 rounded-2xl relative overflow-hidden bg-gradient-to-b from-sky-50 to-sky-100 border border-sky-200 h-[160px] sm:h-[210px] shadow-inner">
             <svg width="100%" height="100%" viewBox="0 0 500 200">
               <defs>
                 <linearGradient id="riverFlowLight" x1="0" y1="0" x2="0" y2="1">

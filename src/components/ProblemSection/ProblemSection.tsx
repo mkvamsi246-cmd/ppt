@@ -54,7 +54,7 @@ export default function ProblemSection() {
 
   return (
     <SectionWrapper id="problem">
-      <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col justify-between py-2">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 w-full flex-1 flex flex-col justify-start sm:justify-between gap-3 py-1 sm:py-2">
         <SectionHeader
           number="02 / 2015 TRAGEDIES vs 2027 AI SOLUTIONS"
           title="Why This Project Exists"
@@ -62,7 +62,7 @@ export default function ProblemSection() {
           color="#dc2626"
         />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 my-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 my-1 sm:my-2">
           {comparisons.map((c) => (
             <div
               key={c.domain}

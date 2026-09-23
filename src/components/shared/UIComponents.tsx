@@ -12,7 +12,7 @@ export function SectionWrapper({ id, children, className = '', dark: _dark = fal
   return (
     <section
       id={id}
-      className={`h-screen w-full flex flex-col justify-center items-center overflow-hidden relative px-3 py-2 md:px-8 select-none bg-[#f8fafc] ${className}`}
+      className={`min-h-[100dvh] sm:h-screen w-full flex flex-col justify-start sm:justify-center items-center relative px-2.5 sm:px-6 md:px-8 select-none bg-[#f8fafc] overflow-y-auto sm:overflow-hidden ${className}`}
       style={{ height: '100dvh' }}
     >
       <motion.div
@@ -20,8 +20,7 @@ export function SectionWrapper({ id, children, className = '', dark: _dark = fal
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 1.02 }}
         transition={{ duration: 0.35 }}
-        className="w-full max-w-7xl mx-auto flex flex-col justify-between h-full overflow-y-auto sm:overflow-hidden overscroll-contain pb-16 sm:pb-0 hide-scrollbar"
-        style={{ maxHeight: 'calc(100dvh - 1rem)' }}
+        className="w-full max-w-7xl mx-auto flex flex-col justify-start sm:justify-between h-full min-h-0 overflow-y-auto sm:overflow-hidden overscroll-contain pt-12 sm:pt-3 pb-24 sm:pb-2 hide-scrollbar"
       >
         {children}
       </motion.div>
@@ -38,29 +37,27 @@ interface SectionHeaderProps {
 
 export function SectionHeader({ number, title, subtitle, color = '#0284c7' }: SectionHeaderProps) {
   return (
-    <div className="text-center mb-2 md:mb-3 px-4 flex-shrink-0">
-      <div className="mb-1">
+    <div className="text-center mb-1.5 sm:mb-2 md:mb-3 px-2 sm:px-4 flex-shrink-0">
+      <div className="mb-0.5 sm:mb-1">
         <span
-          className="font-mono text-xs md:text-sm font-black tracking-widest uppercase px-3 py-0.5 rounded-full bg-sky-50 border border-sky-200"
+          className="font-mono text-[10px] sm:text-xs md:text-sm font-black tracking-wider uppercase px-2.5 sm:px-3 py-0.5 rounded-full bg-sky-50 border border-sky-200 inline-block"
           style={{ color }}
         >
           {number}
         </span>
       </div>
       <h2
-        className="font-display font-black tracking-tight text-slate-900"
+        className="font-display font-black tracking-tight text-slate-900 leading-tight"
         style={{
-          fontSize: 'clamp(1.1rem, 2.7vw, 2.25rem)',
-          marginBottom: subtitle ? 4 : 0,
-          lineHeight: 1.15,
+          fontSize: 'clamp(1.05rem, 2.4vw, 2.15rem)',
+          marginBottom: subtitle ? 2 : 0,
         }}
       >
         {title}
       </h2>
       {subtitle && (
         <p
-          className="text-slate-700 font-medium mx-auto leading-normal"
-          style={{ fontSize: 'clamp(0.72rem, 1.15vw, 1.05rem)', maxWidth: 880 }}
+          className="text-slate-600 font-medium mx-auto leading-snug sm:leading-normal text-xs sm:text-sm max-w-3xl"
         >
           {subtitle}
         </p>
@@ -68,8 +65,8 @@ export function SectionHeader({ number, title, subtitle, color = '#0284c7' }: Se
       <div
         style={{
           height: 3,
-          width: 70,
-          margin: '6px auto 0',
+          width: 50,
+          margin: '4px auto 0',
           borderRadius: 2,
           background: `linear-gradient(90deg, transparent, ${color}, transparent)`,
         }}
