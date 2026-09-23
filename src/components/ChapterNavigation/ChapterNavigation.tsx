@@ -1,5 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { CHAPTERS } from '../../data/content';
 
 interface ChapterNavigationProps {
@@ -8,97 +7,80 @@ interface ChapterNavigationProps {
 }
 
 export default function ChapterNavigation({ activeSection, onNavigate }: ChapterNavigationProps) {
-  const [expanded, setExpanded] = useState(false);
-
   const activeIndex = CHAPTERS.findIndex(c => c.id === activeSection);
   const progress = CHAPTERS.length > 0 ? ((activeIndex + 1) / CHAPTERS.length) * 100 : 0;
 
+  const goPrev = () => {
+    if (activeIndex > 0) onNavigate(CHAPTERS[activeIndex - 1].id);
+  };
+  const goNext = () => {
+    if (activeIndex < CHAPTERS.length - 1) onNavigate(CHAPTERS[activeIndex + 1].id);
+  };
+
   return (
     <>
-      {/* Compact sidebar */}
+
+      {/* ── Mobile: Bottom Navigation Bar ── */}
       <motion.div
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 1.5 }}
-        className="fixed right-4 top-1/2 z-40 flex flex-col items-end gap-1.5"
-        style={{ transform: 'translateY(-50%)' }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 1.2 }}
+        className="fixed bottom-0 left-0 right-0 z-40 sm:hidden"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
-        {/* Progress line */}
-        <div
-          className="absolute right-1.5 top-0 bottom-0"
-          style={{ width: 2, background: 'rgba(2,132,199,0.15)', zIndex: -1 }}
-        >
-          <motion.div
-            style={{ width: '100%', background: 'rgba(2,132,199,0.6)', transformOrigin: 'top', borderRadius: 2 }}
-            animate={{ height: `${progress}%` }}
-            transition={{ duration: 0.5 }}
-          />
+        <div className="glass border-t border-slate-200 bg-white/95 backdrop-blur-md px-4 py-2 flex items-center justify-between gap-2">
+          {/* Prev button */}
+          <button
+            onClick={goPrev}
+            disabled={activeIndex === 0}
+            className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-30 flex items-center justify-center text-slate-700 font-bold text-sm cursor-pointer transition-all border border-slate-200"
+          >
+            ◀
+          </button>
+
+          {/* Dot indicators */}
+          <div className="flex items-center gap-1.5 flex-1 justify-center overflow-hidden">
+            {CHAPTERS.map((ch, i) => {
+              const isActive = ch.id === activeSection;
+              const isPast = i < activeIndex;
+              return (
+                <button
+                  key={ch.id}
+                  onClick={() => onNavigate(ch.id)}
+                  style={{
+                    width: isActive ? 20 : 6,
+                    height: 6,
+                    borderRadius: 3,
+                    background: isActive ? '#0284c7' : isPast ? '#93c5fd' : '#e2e8f0',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s',
+                    flexShrink: 0,
+                    border: 'none',
+                    padding: 0,
+                  }}
+                  title={ch.label}
+                />
+              );
+            })}
+          </div>
+
+          {/* Chapter label */}
+          <div className="text-[10px] font-mono font-bold text-sky-700 whitespace-nowrap hidden xs:block">
+            {CHAPTERS[activeIndex]?.label}
+          </div>
+
+          {/* Next button */}
+          <button
+            onClick={goNext}
+            disabled={activeIndex === CHAPTERS.length - 1}
+            className="w-9 h-9 rounded-xl bg-sky-600 hover:bg-sky-500 disabled:opacity-30 flex items-center justify-center text-white font-bold text-sm cursor-pointer transition-all shadow-sm"
+          >
+            ▶
+          </button>
         </div>
-
-        {CHAPTERS.map((ch, i) => {
-          const isActive = ch.id === activeSection;
-          const isPast   = i < activeIndex;
-          return (
-            <div key={ch.id} className="flex items-center gap-2 group" style={{ position: 'relative' }}>
-              {/* Label (shown on hover / expanded) */}
-              <AnimatePresence>
-                {(expanded || isActive) && (
-                  <motion.button
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 10 }}
-                    onClick={() => onNavigate(ch.id)}
-                    className="rounded-lg px-2.5 py-1 text-right cursor-pointer bg-white/95 shadow-xs border"
-                    style={{
-                      borderColor: isActive ? '#0284c7' : '#e2e8f0',
-                      color: isActive ? '#0284c7' : '#64748b',
-                      fontSize: '0.65rem',
-                      fontWeight: isActive ? 700 : 500,
-                      letterSpacing: '0.05em',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {ch.number} {ch.label}
-                  </motion.button>
-                )}
-              </AnimatePresence>
-
-              {/* Dot */}
-              <button
-                id={`nav-${ch.id}`}
-                onClick={() => { onNavigate(ch.id); setExpanded(false); }}
-                style={{
-                  width: isActive ? 10 : 7,
-                  height: isActive ? 10 : 7,
-                  borderRadius: '50%',
-                  background: isActive ? '#0284c7' : isPast ? '#93c5fd' : '#cbd5e1',
-                  border: isActive ? '2px solid #0369a1' : 'none',
-                  boxShadow: isActive ? '0 0 8px rgba(2,132,199,0.5)' : 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s',
-                  flexShrink: 0,
-                }}
-                title={`${ch.number} ${ch.label}`}
-              />
-            </div>
-          );
-        })}
-
-        {/* Expand/collapse toggle */}
-        <button
-          id="nav-toggle-btn"
-          onClick={() => setExpanded(e => !e)}
-          className="rounded-lg px-2 py-1 mt-2 cursor-pointer bg-white/90 border border-slate-200 shadow-xs text-slate-700 hover:text-sky-600 font-bold"
-          style={{
-            fontSize: '0.65rem',
-            letterSpacing: '0.05em',
-          }}
-        >
-          {expanded ? '✕' : '≡'}
-        </button>
       </motion.div>
 
-      {/* Top progress bar */}
+      {/* ── Top Progress Bar ── */}
       <div className="fixed top-0 left-0 right-0 z-50" style={{ height: 3 }}>
         <motion.div
           style={{ height: '100%', background: 'linear-gradient(90deg, #0284c7, #2563eb, #d97706)', transformOrigin: 'left' }}
@@ -109,3 +91,4 @@ export default function ChapterNavigation({ activeSection, onNavigate }: Chapter
     </>
   );
 }
+

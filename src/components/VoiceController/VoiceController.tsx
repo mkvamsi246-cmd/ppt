@@ -46,10 +46,10 @@ export default function VoiceController({
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="fixed top-3 left-6 z-50 select-none"
+      className="fixed top-3 left-2 sm:left-6 z-50 select-none"
     >
       <div
-        className="glass rounded-full flex items-center gap-2.5 px-3.5 py-1.5 border border-slate-200 bg-white/95 shadow-md backdrop-blur-md"
+        className="glass rounded-full flex items-center gap-1.5 sm:gap-2.5 px-2.5 sm:px-3.5 py-1.5 border border-slate-200 bg-white/95 shadow-md backdrop-blur-md"
       >
         {/* Voice indicator */}
         <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -59,7 +59,7 @@ export default function VoiceController({
             className="rounded-full"
             style={{ width: 8, height: 8, background: isPlaying ? '#059669' : isPaused ? '#d97706' : '#94a3b8' }}
           />
-          <span className="text-[11px] font-mono font-bold text-slate-800 tracking-wider">
+          <span className="text-[11px] font-mono font-bold text-slate-800 tracking-wider hidden sm:inline">
             {isMuted ? 'MUTED' : isPlaying ? 'NARRATING' : isPaused ? 'PAUSED' : 'AI VOICE'}
           </span>
         </div>

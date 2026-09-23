@@ -83,9 +83,13 @@ export default function App() {
 
   const handleStart = useCallback(() => {
     setStarted(true);
+    // Auto-advance to slide 2 (Problem section) after the warp animation clears
     setTimeout(() => {
-      if (!voice.isMuted) voice.play('hero');
-    }, 800);
+      setCurrentSlideIndex(1);
+    }, 400);
+    setTimeout(() => {
+      if (!voice.isMuted) voice.play('problem');
+    }, 900);
   }, [voice]);
 
   const toggleAutoTour = useCallback(() => {
@@ -173,17 +177,18 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden relative select-none bg-[#f8fafc] text-slate-900 flex flex-col justify-center items-center">
+    <div className="h-screen w-screen overflow-hidden relative select-none bg-[#f8fafc] text-slate-900 flex flex-col justify-center items-center" style={{ height: '100dvh' }}>
       {/* ── Auto-Tour Status Banner ── */}
       {started && autoTour && (
         <div
-          className="fixed top-3 left-1/2 z-50 -translate-x-1/2 px-4 py-1.5 rounded-full glass border border-emerald-300 text-emerald-800 text-xs font-mono font-bold flex items-center gap-2 shadow-lg backdrop-blur-md animate-pulse"
+          className="fixed top-3 left-1/2 z-50 -translate-x-1/2 px-3 py-1 rounded-full glass border border-emerald-300 text-emerald-800 text-[10px] sm:text-xs font-mono font-bold flex items-center gap-1.5 shadow-lg backdrop-blur-md animate-pulse max-w-[90vw]"
         >
-          <span className="w-2 h-2 rounded-full bg-emerald-500" />
-          <span>AUTO-PRESENTATION ACTIVE</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
+          <span className="hidden sm:inline">AUTO-PRESENTATION ACTIVE</span>
+          <span className="sm:hidden">AUTO</span>
           <button
             onClick={toggleAutoTour}
-            className="ml-2 px-2 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[10px] cursor-pointer"
+            className="ml-1 px-1.5 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[9px] cursor-pointer"
           >
             Pause
           </button>
@@ -192,29 +197,30 @@ export default function App() {
 
       {/* ── On-Screen Presentation Floating Bar ── */}
       {started && (
-        <div className="fixed top-3 right-6 z-40 flex items-center gap-2 px-3 py-1 rounded-full glass border border-slate-200 text-xs font-mono text-slate-700 shadow-md backdrop-blur-md">
-          <span className="text-sky-700 font-black">
-            SLIDE {String(currentSlideIndex + 1).padStart(2, '0')} / {CHAPTERS.length}
+        <div className="fixed top-3 right-3 sm:right-6 z-40 flex items-center gap-1.5 px-2 sm:px-3 py-1 rounded-full glass border border-slate-200 text-xs font-mono text-slate-700 shadow-md backdrop-blur-md">
+          <span className="text-sky-700 font-black text-[10px] sm:text-xs">
+            {String(currentSlideIndex + 1).padStart(2, '0')}<span className="hidden sm:inline"> / {CHAPTERS.length}</span>
           </span>
           <span className="text-slate-300">·</span>
           <button
             onClick={goToPrevSlide}
             disabled={currentSlideIndex === 0}
-            className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-slate-700 font-bold"
-            title="Previous Slide (Shift+Space / Left Arrow)"
+            className="px-1.5 sm:px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-slate-700 font-bold text-xs"
+            title="Previous Slide"
           >
             ◀
           </button>
           <button
             onClick={goToNextSlide}
             disabled={currentSlideIndex === CHAPTERS.length - 1}
-            className="px-2.5 py-0.5 rounded bg-sky-600 hover:bg-sky-700 text-white font-bold disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-sm"
-            title="Next Slide (Spacebar / Right Arrow)"
+            className="px-2 sm:px-2.5 py-0.5 rounded bg-sky-600 hover:bg-sky-700 text-white font-bold disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-sm text-[10px] sm:text-xs"
+            title="Next Slide"
           >
-            Next (SPACE) ▶
+            <span className="hidden sm:inline">Next (SPACE) </span>▶
           </button>
         </div>
       )}
+
 
       {/* ── Pure 100vh Slide Viewport (Animated Slide Transitions) ── */}
       <div className="w-full h-full flex flex-col justify-center items-center relative overflow-hidden">

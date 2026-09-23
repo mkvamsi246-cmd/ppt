@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { SectionWrapper, SectionHeader } from '../shared/UIComponents';
 
 export default function AdaptiveTraffic() {
@@ -106,6 +107,158 @@ export default function AdaptiveTraffic() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* ── Live Animated ATCS Intersection Canvas ── */}
+        <div className="rounded-2xl relative overflow-hidden bg-gradient-to-b from-slate-100 to-slate-50 border border-slate-200 h-[190px] shadow-inner my-2">
+          <svg width="100%" height="100%" viewBox="0 0 640 190">
+            <defs>
+              <linearGradient id="roadBg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#f1f5f9" />
+                <stop offset="100%" stopColor="#e2e8f0" />
+              </linearGradient>
+            </defs>
+
+            <rect width="640" height="190" fill="url(#roadBg)" />
+
+            {/* Road surface - horizontal */}
+            <rect x="0" y="75" width="640" height="40" fill="#475569" rx="2" />
+            {/* Road surface - vertical */}
+            <rect x="295" y="0" width="50" height="190" fill="#475569" />
+            {/* Intersection box */}
+            <rect x="295" y="75" width="50" height="40" fill="#64748b" />
+
+            {/* Lane markings - horizontal */}
+            {[80, 160, 240, 400, 480, 560].map((x, i) => (
+              <rect key={`hm-${i}`} x={x} y="93" width="30" height="4" fill="#fbbf24" opacity="0.7" rx="2" />
+            ))}
+            {/* Lane markings - vertical */}
+            {[25, 55, 130, 160].map((y, i) => (
+              <rect key={`vm-${i}`} x="313" y={y} width="4" height="20" fill="#fbbf24" opacity="0.7" rx="2" />
+            ))}
+
+            {/* Traffic lights (N/S/E/W) */}
+            {/* West side light (controls east-bound traffic) */}
+            <g transform="translate(270, 80)">
+              <rect x="-10" y="-10" width="20" height="36" rx="4" fill="#1e293b" />
+              <motion.circle cx="0" cy="0" r="6"
+                fill="#ef4444"
+                animate={{ opacity: [1, 1, 0, 0, 1] }}
+                transition={{ duration: 4, repeat: Infinity, times: [0, 0.4, 0.41, 0.95, 1] }}
+              />
+              <motion.circle cx="0" cy="16" r="6"
+                fill="#22c55e"
+                animate={{ opacity: [0, 0, 1, 1, 0] }}
+                transition={{ duration: 4, repeat: Infinity, times: [0, 0.4, 0.41, 0.95, 1] }}
+              />
+              <rect x="-28" y="-14" width="46" height="12" rx="3" fill="white" stroke="#64748b" strokeWidth="1" />
+              <text x="-5" y="-5" fontSize="6.5" fill="#0369a1" fontWeight="bold">WEST</text>
+            </g>
+
+            {/* East side light */}
+            <g transform="translate(370, 88)">
+              <rect x="-10" y="-10" width="20" height="36" rx="4" fill="#1e293b" />
+              <motion.circle cx="0" cy="0" r="6"
+                fill="#ef4444"
+                animate={{ opacity: [0, 0, 1, 1, 0] }}
+                transition={{ duration: 4, repeat: Infinity, times: [0, 0.4, 0.41, 0.95, 1] }}
+              />
+              <motion.circle cx="0" cy="16" r="6"
+                fill="#22c55e"
+                animate={{ opacity: [1, 1, 0, 0, 1] }}
+                transition={{ duration: 4, repeat: Infinity, times: [0, 0.4, 0.41, 0.95, 1] }}
+              />
+              <rect x="-18" y="-14" width="46" height="12" rx="3" fill="white" stroke="#64748b" strokeWidth="1" />
+              <text x="-5" y="-5" fontSize="6.5" fill="#0369a1" fontWeight="bold">EAST</text>
+            </g>
+
+            {/* North signal */}
+            <g transform="translate(302, 60)">
+              <rect x="-10" y="-10" width="20" height="36" rx="4" fill="#1e293b" />
+              <motion.circle cx="0" cy="0" r="6"
+                fill="#ef4444"
+                animate={{ opacity: [1, 1, 0, 0, 1] }}
+                transition={{ duration: 4, repeat: Infinity, delay: 2, times: [0, 0.4, 0.41, 0.95, 1] }}
+              />
+              <motion.circle cx="0" cy="16" r="6"
+                fill="#22c55e"
+                animate={{ opacity: [0, 0, 1, 1, 0] }}
+                transition={{ duration: 4, repeat: Infinity, delay: 2, times: [0, 0.4, 0.41, 0.95, 1] }}
+              />
+            </g>
+
+            {/* Vehicle queues - west arm (shrinking when green) */}
+            <motion.g
+              animate={{ x: [0, -18, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              {[40, 80, 130, 180, 225].map((x, i) => (
+                <g key={`wv-${i}`} transform={`translate(${x}, 82)`}>
+                  <rect x="0" y="0" width="22" height="12" rx="2" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="1" />
+                  <text x="11" y="9" fontSize="9" textAnchor="middle">🚗</text>
+                </g>
+              ))}
+            </motion.g>
+
+            {/* Vehicle queues - east arm (heavy surge side — shrinking in AI phase) */}
+            <motion.g
+              animate={{ x: [0, 28, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+            >
+              {[360, 400, 445, 490, 535, 580].map((x, i) => (
+                <g key={`ev-${i}`} transform={`translate(${x}, 82)`}>
+                  <rect x="0" y="0" width="22" height="12" rx="2" fill="#fde68a" stroke="#d97706" strokeWidth="1" />
+                  <text x="11" y="9" fontSize="9" textAnchor="middle">🚗</text>
+                </g>
+              ))}
+            </motion.g>
+
+            {/* IoT inductive loop sensor pulses */}
+            {[240, 400].map((x, i) => (
+              <motion.ellipse key={`loop-${i}`} cx={x} cy="95" rx="18" ry="8"
+                fill="none" stroke="#0ea5e9" strokeWidth="1.5" strokeDasharray="4 3"
+                animate={{ opacity: [0.3, 1, 0.3], rx: [16, 22, 16] }}
+                transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.6 }}
+              />
+            ))}
+
+            {/* ESP32 Edge Node */}
+            <g transform="translate(320, 10)">
+              <rect x="-38" y="-8" width="76" height="16" rx="4" fill="white" stroke="#0284c7" strokeWidth="1.5" />
+              <text x="0" y="5" fontSize="7" fill="#0369a1" textAnchor="middle" fontWeight="bold">📟 ESP32 NODE #12</text>
+              <motion.line x1="0" y1="8" x2="0" y2="65"
+                stroke="#0284c7" strokeWidth="1.5" strokeDasharray="3 3"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.2, repeat: Infinity }}
+              />
+            </g>
+
+            {/* ATCS Override label on active junction */}
+            <rect x="290" y="122" width="60" height="16" rx="4" fill="#059669" />
+            <motion.text x="320" y="133" fontSize="7" fill="white" textAnchor="middle" fontWeight="bold"
+              animate={{ opacity: [1, 0.4, 1] }}
+              transition={{ duration: 1.4, repeat: Infinity }}>
+              ⚡ ATCS ACTIVE
+            </motion.text>
+
+            {/* Timer badge — adaptive green counter */}
+            <motion.g animate={{ opacity: [1, 0.6, 1] }} transition={{ duration: 2, repeat: Infinity }}>
+              <rect x="200" y="52" width="72" height="16" rx="4" fill="#065f46" />
+              <text x="236" y="63" fontSize="7.5" fill="#6ee7b7" textAnchor="middle" fontWeight="bold">GREEN: +25s AI</text>
+            </motion.g>
+
+            {/* LIVE badge */}
+            <rect x="8" y="8" width="44" height="14" rx="3" fill="#dc2626" />
+            <motion.text x="30" y="19" fontSize="8" fill="white" textAnchor="middle" fontWeight="bold"
+              animate={{ opacity: [1, 0.3, 1] }}
+              transition={{ duration: 1.2, repeat: Infinity }}>
+              ● LIVE
+            </motion.text>
+
+            {/* Road label */}
+            <rect x="58" y="8" width="106" height="14" rx="3" fill="white" stroke="#64748b" strokeWidth="1" />
+            <text x="111" y="19" fontSize="7" fill="#334155" textAnchor="middle" fontWeight="bold">GODAVARI BRIDGE JCT #04</text>
+          </svg>
         </div>
 
         {/* ── Main 2-Column Dashboard ── */}

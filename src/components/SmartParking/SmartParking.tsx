@@ -77,6 +77,127 @@ export default function SmartParking() {
           ))}
         </div>
 
+        {/* ── Live Animated ANPR Gate Canvas ── */}
+        <div className="rounded-2xl relative overflow-hidden bg-gradient-to-r from-slate-50 via-sky-50 to-slate-50 border border-slate-200 h-[185px] shadow-inner my-2">
+          <svg width="100%" height="100%" viewBox="0 0 640 185">
+            <defs>
+              <linearGradient id="gateBg" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#f8fafc" />
+                <stop offset="50%" stopColor="#e0f2fe" />
+                <stop offset="100%" stopColor="#f8fafc" />
+              </linearGradient>
+              <linearGradient id="roadSurface" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#94a3b8" />
+                <stop offset="100%" stopColor="#64748b" />
+              </linearGradient>
+            </defs>
+
+            <rect width="640" height="185" fill="url(#gateBg)" />
+
+            {/* Road surface */}
+            <rect x="0" y="110" width="640" height="75" fill="url(#roadSurface)" opacity="0.85" />
+            {/* Lane markings */}
+            {[60, 130, 220, 310, 430, 520].map((x, i) => (
+              <rect key={`lm-${i}`} x={x} y="138" width="40" height="5" fill="#fbbf24" opacity="0.65" rx="2" />
+            ))}
+            {/* Pavement edge */}
+            <rect x="0" y="108" width="640" height="4" fill="#cbd5e1" />
+
+            {/* Entrance gate structure */}
+            <rect x="288" y="30" width="12" height="82" fill="#1e293b" rx="3" />
+            <rect x="340" y="30" width="12" height="82" fill="#1e293b" rx="3" />
+            {/* Top crossbar */}
+            <rect x="284" y="28" width="80" height="10" fill="#334155" rx="3" />
+
+            {/* Gate boom barrier — animated opening */}
+            <motion.g style={{ transformOrigin: '300px 112px' }}
+              animate={{ rotate: [0, -75, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', times: [0, 0.35, 1] }}
+            >
+              <rect x="300" y="108" width="85" height="8" rx="3"
+                fill="#ef4444" />
+              <rect x="300" y="108" width="85" height="8" rx="3"
+                fill="none" stroke="#b91c1c" strokeWidth="1" strokeDasharray="10 6" />
+            </motion.g>
+
+            {/* Gate label */}
+            <rect x="264" y="8" width="112" height="16" rx="4" fill="white" stroke="#0284c7" strokeWidth="1.5" />
+            <text x="320" y="20" fontSize="7.5" fill="#0369a1" textAnchor="middle" fontWeight="bold">GATE NORTH ANPR-02</text>
+
+            {/* ANPR Camera mounted on pole */}
+            <g transform="translate(288, 55)">
+              <rect x="-20" y="-10" width="40" height="20" rx="4" fill="#1e293b" />
+              <text x="0" y="5" fontSize="14" textAnchor="middle">📷</text>
+              {/* Scan beam */}
+              <motion.polygon
+                points="0,10 -45,90 45,90"
+                fill="#0ea5e9"
+                animate={{ opacity: [0, 0.25, 0], scaleX: [0.5, 1.2, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ transformOrigin: '0 10px' }}
+              />
+              <rect x="-50" y="-22" width="100" height="10" rx="3" fill="#0284c7" />
+              <text x="0" y="-14" fontSize="6.5" fill="white" textAnchor="middle" fontWeight="bold">ANPR SCANNER</text>
+            </g>
+
+            {/* Approaching vehicle */}
+            <motion.g animate={{ x: [0, -170, -170, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', times: [0, 0.35, 0.65, 1] }}>
+              {/* Car body */}
+              <g transform="translate(490, 112)">
+                <rect x="-32" y="-10" width="64" height="20" rx="5" fill="#fde68a" stroke="#d97706" strokeWidth="1.5" />
+                <rect x="-20" y="-18" width="40" height="14" rx="4" fill="#fbbf24" stroke="#d97706" strokeWidth="1" />
+                {/* Windshield */}
+                <rect x="-16" y="-17" width="32" height="12" rx="2" fill="#bae6fd" opacity="0.7" />
+                {/* Headlights */}
+                <motion.circle cx="-28" cy="4" r="4" fill="#fef08a"
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 0.8, repeat: Infinity }}
+                />
+                <motion.circle cx="28" cy="4" r="4" fill="#fef08a"
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 0.8, repeat: Infinity }}
+                />
+                {/* Number plate */}
+                <rect x="-22" y="8" width="44" height="10" rx="2" fill="#fef3c7" stroke="#d97706" strokeWidth="1" />
+                <text x="0" y="17" fontSize="5.5" fill="#92400e" textAnchor="middle" fontWeight="bold">AP 05 BX 9922</text>
+              </g>
+            </motion.g>
+
+            {/* Plate recognized label */}
+            <motion.g
+              animate={{ opacity: [0, 0, 1, 1, 0], y: [0, 0, 0, -5, -8] }}
+              transition={{ duration: 6, repeat: Infinity, times: [0, 0.3, 0.4, 0.6, 0.7] }}
+            >
+              <rect x="150" y="40" width="140" height="36" rx="6" fill="white" stroke="#059669" strokeWidth="2" />
+              <text x="220" y="55" fontSize="7.5" fill="#065f46" textAnchor="middle" fontWeight="bold">✓ PLATE RECOGNIZED</text>
+              <text x="220" y="67" fontSize="7" fill="#059669" textAnchor="middle" fontWeight="bold">→ SLOT C-24 ASSIGNED</text>
+            </motion.g>
+
+            {/* BARRIER OPEN label */}
+            <motion.g
+              animate={{ opacity: [0, 0, 0, 1, 0] }}
+              transition={{ duration: 6, repeat: Infinity, times: [0, 0.3, 0.34, 0.55, 0.65] }}
+            >
+              <rect x="335" y="65" width="90" height="16" rx="4" fill="#059669" />
+              <text x="380" y="76" fontSize="7.5" fill="white" textAnchor="middle" fontWeight="bold">🚧 BARRIER OPEN</text>
+            </motion.g>
+
+            {/* LIVE badge */}
+            <rect x="8" y="8" width="44" height="14" rx="3" fill="#dc2626" />
+            <motion.text x="30" y="19" fontSize="8" fill="white" textAnchor="middle" fontWeight="bold"
+              animate={{ opacity: [1, 0.3, 1] }}
+              transition={{ duration: 1.2, repeat: Infinity }}>
+              ● LIVE
+            </motion.text>
+
+            {/* Confidence badge */}
+            <motion.g animate={{ opacity: [1, 0.6, 1] }} transition={{ duration: 2, repeat: Infinity }}>
+              <rect x="58" y="8" width="100" height="14" rx="3" fill="#065f46" />
+              <text x="108" y="19" fontSize="7" fill="#6ee7b7" textAnchor="middle" fontWeight="bold">ANPR: 99.4% ACCURACY</text>
+            </motion.g>
+          </svg>
+        </div>
+
         {/* ── Interactive 2-Column Command Workspace ── */}
         <div className="grid lg:grid-cols-12 gap-5 my-2 items-stretch">
           {/* Left Column: Ghat Parking Lots & Mobile App Live Sync */}

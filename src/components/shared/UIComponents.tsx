@@ -12,14 +12,16 @@ export function SectionWrapper({ id, children, className = '', dark: _dark = fal
   return (
     <section
       id={id}
-      className={`h-screen w-full flex flex-col justify-center items-center overflow-hidden relative px-4 py-3 md:px-8 select-none bg-[#f8fafc] ${className}`}
+      className={`h-screen w-full flex flex-col justify-center items-center overflow-hidden relative px-3 py-2 md:px-8 select-none bg-[#f8fafc] ${className}`}
+      style={{ height: '100dvh' }}
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 1.02 }}
         transition={{ duration: 0.35 }}
-        className="w-full max-w-7xl mx-auto flex flex-col justify-between h-full max-h-[96vh]"
+        className="w-full max-w-7xl mx-auto flex flex-col justify-between h-full overflow-y-auto sm:overflow-hidden overscroll-contain pb-16 sm:pb-0 hide-scrollbar"
+        style={{ maxHeight: 'calc(100dvh - 1rem)' }}
       >
         {children}
       </motion.div>
@@ -48,7 +50,7 @@ export function SectionHeader({ number, title, subtitle, color = '#0284c7' }: Se
       <h2
         className="font-display font-black tracking-tight text-slate-900"
         style={{
-          fontSize: 'clamp(1.5rem, 2.7vw, 2.25rem)',
+          fontSize: 'clamp(1.1rem, 2.7vw, 2.25rem)',
           marginBottom: subtitle ? 4 : 0,
           lineHeight: 1.15,
         }}
@@ -58,7 +60,7 @@ export function SectionHeader({ number, title, subtitle, color = '#0284c7' }: Se
       {subtitle && (
         <p
           className="text-slate-700 font-medium mx-auto leading-normal"
-          style={{ fontSize: 'clamp(0.85rem, 1.15vw, 1.05rem)', maxWidth: 880 }}
+          style={{ fontSize: 'clamp(0.72rem, 1.15vw, 1.05rem)', maxWidth: 880 }}
         >
           {subtitle}
         </p>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { SectionWrapper, SectionHeader } from '../shared/UIComponents';
 
 export default function CrowdManagement() {
@@ -109,6 +110,141 @@ export default function CrowdManagement() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* ── Live AI Surveillance Animated Canvas ── */}
+        <div className="rounded-2xl relative overflow-hidden bg-gradient-to-b from-slate-50 to-sky-50 border border-slate-200 h-[190px] shadow-inner my-2">
+          <svg width="100%" height="100%" viewBox="0 0 640 190">
+            <defs>
+              <linearGradient id="crowdBg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#f8fafc" />
+                <stop offset="100%" stopColor="#e0f2fe" />
+              </linearGradient>
+              <radialGradient id="surgePulse" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#ef4444" stopOpacity="0.35" />
+                <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id="safePulse" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+
+            <rect width="640" height="190" fill="url(#crowdBg)" />
+
+            {/* Godavari riverbank strip */}
+            <rect x="0" y="155" width="640" height="35" fill="#bae6fd" opacity="0.6" />
+            <motion.path
+              d="M 0 158 Q 160 153 320 158 T 640 158"
+              stroke="#38bdf8" strokeWidth="2" fill="none" strokeOpacity="0.7"
+              animate={{ d: ['M 0 158 Q 160 153 320 158 T 640 158', 'M 0 162 Q 160 166 320 159 T 640 162', 'M 0 158 Q 160 153 320 158 T 640 158'] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            />
+
+            {/* Ghat boundary lines */}
+            {[120, 260, 400, 530].map((x, i) => (
+              <g key={i}>
+                <rect x={x - 50} y="80" width="100" height="75" rx="6"
+                  fill={i === 0 ? '#fee2e2' : i === 1 ? '#fef3c7' : '#d1fae5'}
+                  stroke={i === 0 ? '#ef4444' : i === 1 ? '#d97706' : '#059669'}
+                  strokeWidth="1.5" opacity="0.55"
+                />
+                <text x={x} y="98" fontSize="7.5" fill={i === 0 ? '#991b1b' : i === 1 ? '#92400e' : '#065f46'}
+                  textAnchor="middle" fontWeight="bold">
+                  {['Kotilingala', 'Pushkar', 'Saraswathi', 'Markandeya'][i]}
+                </text>
+                <text x={x} y="110" fontSize="6.5" fill={i === 0 ? '#b91c1c' : i === 1 ? '#b45309' : '#047857'}
+                  textAnchor="middle" fontWeight="bold">
+                  GHAT
+                </text>
+              </g>
+            ))}
+
+            {/* Surge pulse ring on Kotilingala (critical) */}
+            <motion.circle cx="120" cy="118" r="28"
+              fill="url(#surgePulse)"
+              animate={{ r: [22, 40, 22], opacity: [0.9, 0.1, 0.9] }}
+              transition={{ duration: 1.6, repeat: Infinity }}
+            />
+            <motion.circle cx="120" cy="118" r="14"
+              fill="none" stroke="#ef4444" strokeWidth="2"
+              animate={{ r: [12, 22, 12], opacity: [0.9, 0.2, 0.9] }}
+              transition={{ duration: 1.6, repeat: Infinity, delay: 0.3 }}
+            />
+            <circle cx="120" cy="118" r="7" fill="#ef4444" />
+            <text x="120" y="122" fontSize="8" fill="white" textAnchor="middle" fontWeight="bold">!</text>
+            <rect x="68" y="52" width="104" height="16" rx="4" fill="white" stroke="#ef4444" strokeWidth="1.5" />
+            <text x="120" y="64" fontSize="8" fill="#b91c1c" textAnchor="middle" fontWeight="bold">SURGE DETECTED — 84%</text>
+
+            {/* Steady pulse on Pushkar (moderate) */}
+            <motion.circle cx="260" cy="118" r="14"
+              fill="none" stroke="#d97706" strokeWidth="2"
+              animate={{ r: [10, 18, 10], opacity: [0.8, 0.2, 0.8] }}
+              transition={{ duration: 2.4, repeat: Infinity }}
+            />
+            <circle cx="260" cy="118" r="7" fill="#d97706" />
+            <rect x="218" y="52" width="84" height="14" rx="4" fill="white" stroke="#d97706" strokeWidth="1.5" />
+            <text x="260" y="63" fontSize="7.5" fill="#92400e" textAnchor="middle" fontWeight="bold">MODERATE — 65%</text>
+
+            {/* Safe pulse on Saraswathi */}
+            <motion.circle cx="400" cy="118" r="14"
+              fill="url(#safePulse)"
+              animate={{ r: [10, 20, 10], opacity: [0.8, 0.2, 0.8] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
+            <circle cx="400" cy="118" r="7" fill="#059669" />
+            <rect x="358" y="52" width="84" height="14" rx="4" fill="white" stroke="#059669" strokeWidth="1.5" />
+            <text x="400" y="63" fontSize="7.5" fill="#065f46" textAnchor="middle" fontWeight="bold">FREE &amp; OPEN — 28%</text>
+
+            {/* CCTV camera icons at top */}
+            {[90, 150, 230, 290, 370, 430].map((x, i) => (
+              <g key={`cam-${i}`} transform={`translate(${x}, 20)`}>
+                <rect x="-14" y="-8" width="28" height="16" rx="3" fill="white" stroke="#94a3b8" strokeWidth="1" />
+                <text x="0" y="5" fontSize="10" textAnchor="middle">📷</text>
+                <motion.line
+                  x1="0" y1="8" x2="0" y2="58"
+                  stroke={i < 2 ? '#ef4444' : i < 4 ? '#d97706' : '#059669'}
+                  strokeWidth="1.5" strokeDasharray="3 3"
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.25 }}
+                />
+              </g>
+            ))}
+
+            {/* AI scan sweep line */}
+            <motion.line
+              y1="20" y2="155"
+              stroke="#0284c7" strokeWidth="1.5" strokeOpacity="0.5" strokeDasharray="5 4"
+              animate={{ x1: [40, 560, 40], x2: [40, 560, 40] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+            />
+            <motion.rect
+              y="20" width="3" height="135"
+              fill="#0284c7" opacity="0.3"
+              animate={{ x: [40, 560, 40] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+            />
+
+            {/* Dispatched Officer icon moving toward Kotilingala */}
+            <motion.g animate={{ x: [390, 170, 390] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}>
+              <circle cy="130" r="10" fill="white" stroke="#0284c7" strokeWidth="2" />
+              <text y="134" fontSize="11" textAnchor="middle">👮</text>
+              <rect x="-30" y="112" width="60" height="13" rx="3" fill="#0284c7" />
+              <text y="122" fontSize="7" fill="white" textAnchor="middle" fontWeight="bold">DELTA-3</text>
+            </motion.g>
+
+            {/* LIVE label */}
+            <rect x="8" y="8" width="44" height="14" rx="3" fill="#ef4444" />
+            <motion.text x="30" y="19" fontSize="8" fill="white" textAnchor="middle" fontWeight="bold"
+              animate={{ opacity: [1, 0.3, 1] }}
+              transition={{ duration: 1.2, repeat: Infinity }}>
+              ● LIVE
+            </motion.text>
+
+            {/* AI label */}
+            <rect x="58" y="8" width="72" height="14" rx="3" fill="white" stroke="#0284c7" strokeWidth="1" />
+            <text x="94" y="19" fontSize="7.5" fill="#0369a1" textAnchor="middle" fontWeight="bold">AI SCAN ACTIVE</text>
+          </svg>
         </div>
 
         {/* ── Main 2-Column Dashboard ── */}

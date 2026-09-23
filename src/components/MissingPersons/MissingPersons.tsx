@@ -76,6 +76,126 @@ export default function MissingPersons() {
           ))}
         </div>
 
+        {/* ── Live Animated Facial Re-ID Canvas ── */}
+        <div className="rounded-2xl relative overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800 border border-slate-700 h-[180px] shadow-inner my-2">
+          <svg width="100%" height="100%" viewBox="0 0 640 180">
+            <defs>
+              <radialGradient id="facePulse" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.5" />
+                <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id="blePulse" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#a78bfa" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#a78bfa" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+
+            {/* Dark ghat background */}
+            <rect width="640" height="180" fill="#0f172a" />
+            {/* Ground grid */}
+            {Array.from({ length: 10 }).map((_, i) => (
+              <line key={`h${i}`} x1="0" y1={i * 18} x2="640" y2={i * 18} stroke="#1e293b" strokeWidth="1" />
+            ))}
+            {Array.from({ length: 18 }).map((_, i) => (
+              <line key={`v${i}`} x1={i * 36} y1="0" x2={i * 36} y2="180" stroke="#1e293b" strokeWidth="1" />
+            ))}
+
+            {/* Pilgrim crowd dots */}
+            {[
+              [80,90],[110,110],[130,75],[160,95],[190,115],[220,80],
+              [350,90],[380,110],[410,75],[440,100],[470,85],[500,115],
+            ].map(([x,y], i) => (
+              <g key={`pilgrim-${i}`}>
+                <circle cx={x} cy={y} r="8" fill="#334155" stroke="#475569" strokeWidth="1" />
+                <text x={x} y={y + 4} fontSize="9" textAnchor="middle">👤</text>
+              </g>
+            ))}
+
+            {/* CCTV cameras top */}
+            {[60, 200, 340, 480, 580].map((x, i) => (
+              <g key={`cctv-${i}`} transform={`translate(${x}, 12)`}>
+                <rect x="-12" y="-8" width="24" height="14" rx="3" fill="#1e293b" stroke="#334155" strokeWidth="1" />
+                <text x="0" y="4" fontSize="10" textAnchor="middle">📷</text>
+                {/* Scan cone from camera */}
+                <motion.polygon
+                  points={`0,6 -30,80 30,80`}
+                  fill="#0ea5e9"
+                  animate={{ opacity: [0.05, 0.18, 0.05] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+                />
+              </g>
+            ))}
+
+            {/* AI Scan sweep line */}
+            <motion.line
+              y1="20" y2="160"
+              stroke="#0ea5e9" strokeWidth="2" strokeOpacity="0.6" strokeDasharray="6 4"
+              animate={{ x1: [40, 580, 40], x2: [40, 580, 40] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+            />
+            <motion.rect
+              y="20" width="4" height="140"
+              fill="#0ea5e9" opacity="0.25"
+              animate={{ x: [40, 580, 40] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+            />
+
+            {/* MATCH bounding box — appears on target pilgrim */}
+            <motion.rect
+              x="102" y="65" width="26" height="34" rx="3"
+              fill="none" stroke="#22c55e" strokeWidth="2" strokeDasharray="4 2"
+              animate={{ opacity: [0, 0, 1, 1, 0], scaleX: [0.7, 0.7, 1, 1, 0.7], scaleY: [0.7, 0.7, 1, 1, 0.7] }}
+              style={{ transformOrigin: '115px 82px' }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeOut', times: [0, 0.35, 0.45, 0.75, 1] }}
+            />
+            {/* Match label */}
+            <motion.g
+              animate={{ opacity: [0, 0, 1, 1, 0] }}
+              transition={{ duration: 5, repeat: Infinity, times: [0, 0.44, 0.48, 0.75, 1] }}
+            >
+              <rect x="85" y="48" width="68" height="14" rx="3" fill="#15803d" />
+              <text x="119" y="59" fontSize="7" fill="white" textAnchor="middle" fontWeight="bold">✓ MATCH 98.4%</text>
+            </motion.g>
+
+            {/* BLE Wristband signal */}
+            <motion.circle cx="440" cy="100" r="18"
+              fill="url(#blePulse)"
+              animate={{ r: [14, 34, 14], opacity: [0.9, 0.1, 0.9] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+            <circle cx="440" cy="100" r="8" fill="#7c3aed" />
+            <text x="440" y="104" fontSize="8" fill="white" textAnchor="middle">📡</text>
+            <rect x="398" y="62" width="84" height="12" rx="3" fill="#4c1d95" />
+            <text x="440" y="72" fontSize="6.5" fill="#c4b5fd" textAnchor="middle" fontWeight="bold">BLE ID: WB-4721-K</text>
+
+            {/* Officer moving toward match */}
+            <motion.g animate={{ x: [320, 100, 320] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}>
+              <circle cy="145" r="10" fill="#1e40af" stroke="#3b82f6" strokeWidth="2" />
+              <text y="149" fontSize="11" textAnchor="middle">👮</text>
+              <rect x="-28" y="128" width="56" height="12" rx="3" fill="#1e40af" />
+              <text y="137" fontSize="6.5" fill="#bfdbfe" textAnchor="middle" fontWeight="bold">ALPHA-7 DISPATCH</text>
+            </motion.g>
+
+            {/* LIVE badge */}
+            <rect x="8" y="8" width="40" height="13" rx="3" fill="#dc2626" />
+            <motion.text x="28" y="18" fontSize="7.5" fill="white" textAnchor="middle" fontWeight="bold"
+              animate={{ opacity: [1, 0.3, 1] }}
+              transition={{ duration: 1.2, repeat: Infinity }}>
+              ● LIVE
+            </motion.text>
+
+            {/* Re-ID label */}
+            <rect x="54" y="8" width="100" height="13" rx="3" fill="#0c4a6e" />
+            <text x="104" y="18" fontSize="7" fill="#38bdf8" textAnchor="middle" fontWeight="bold">AI FACIAL RE-ID ACTIVE</text>
+
+            {/* Confidence counter */}
+            <motion.g animate={{ opacity: [1, 0.5, 1] }} transition={{ duration: 2.5, repeat: Infinity }}>
+              <rect x="530" y="8" width="98" height="13" rx="3" fill="#14532d" />
+              <text x="579" y="18" fontSize="7" fill="#86efac" textAnchor="middle" fontWeight="bold">520 CCTVs SCANNING</text>
+            </motion.g>
+          </svg>
+        </div>
+
         {/* ── Interactive Command & Re-ID Simulation Panel ── */}
         <div className="grid lg:grid-cols-12 gap-5 items-stretch my-2">
           {/* Left Column: Active Cases */}
