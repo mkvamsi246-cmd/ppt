@@ -165,33 +165,6 @@ export default function App() {
         </div>
       )}
 
-      {/* ── On-Screen Presentation Floating Bar ── */}
-      {started && (
-        <div className="fixed top-3 right-3 sm:right-6 z-50 flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full glass border border-slate-200 text-xs font-mono text-slate-700 shadow-md backdrop-blur-md">
-          <span className="text-sky-700 font-black text-[11px] sm:text-xs">
-            {String(currentSlideIndex + 1).padStart(2, '0')}<span className="text-slate-400 font-normal"> / {CHAPTERS.length}</span>
-          </span>
-          <span className="text-slate-300">·</span>
-          <button
-            onClick={goToPrevSlide}
-            disabled={currentSlideIndex === 0}
-            className="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-slate-700 font-bold text-xs transition-all active:scale-95 border border-slate-200"
-            title="Previous Slide"
-          >
-            ◀
-          </button>
-          <button
-            onClick={goToNextSlide}
-            disabled={currentSlideIndex === CHAPTERS.length - 1}
-            className="px-3 py-1 rounded-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-black disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-md shadow-sky-500/25 ring-2 ring-sky-400/40 text-[11px] sm:text-xs flex items-center gap-1 transition-all active:scale-95"
-            title="Next Slide"
-          >
-            <span className="hidden sm:inline">NEXT (SPACE)</span>
-            <span className="sm:hidden">NEXT</span>
-            <span className="text-sm font-black">▶</span>
-          </button>
-        </div>
-      )}
 
       {/* ── Slide Viewport (Animated Transitions + Mobile Smooth Scroll) ── */}
       <div className="w-full h-full flex flex-col justify-start sm:justify-center items-center relative overflow-hidden">

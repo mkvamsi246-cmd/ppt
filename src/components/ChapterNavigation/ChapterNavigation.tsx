@@ -45,20 +45,20 @@ export default function ChapterNavigation({
 
   return (
     <>
-      {/* ── Mobile: Prominently Highlighted Bottom Slide Controller ── */}
+      {/* ── Unified Highlighted Bottom Slide Controller (Mobile & Desktop) ── */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="fixed bottom-0 left-0 right-0 z-50 sm:hidden"
+        className="fixed bottom-0 left-0 right-0 sm:bottom-4 sm:left-1/2 sm:-translate-x-1/2 sm:max-w-2xl sm:w-auto z-50 px-0 sm:px-4"
         style={{ paddingBottom: 'env(safe-area-inset-bottom, 8px)' }}
       >
-        <div className="glass border-t-2 border-sky-200 bg-white/98 backdrop-blur-xl px-3 py-2 flex items-center justify-between gap-2 shadow-[0_-8px_25px_-5px_rgba(2,132,199,0.15)]">
+        <div className="glass border-t-2 sm:border-2 border-sky-200 bg-white/98 backdrop-blur-xl px-3 sm:px-5 py-2 rounded-none sm:rounded-2xl flex items-center justify-between gap-2 sm:gap-4 shadow-[0_-8px_25px_-5px_rgba(2,132,199,0.15)] sm:shadow-xl sm:border-slate-200">
           {/* Previous Slide Button */}
           <button
             onClick={handlePrev}
             disabled={!hasPrev}
-            className="h-10 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1 text-slate-800 font-bold text-xs cursor-pointer transition-all border border-slate-300 flex-shrink-0 active:scale-95 shadow-xs"
+            className="h-10 px-3 sm:px-4 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1 text-slate-800 font-bold text-xs cursor-pointer transition-all border border-slate-300 flex-shrink-0 active:scale-95 shadow-xs"
             title="Previous Slide"
           >
             <span className="text-sm font-black">◀</span>
@@ -66,17 +66,17 @@ export default function ChapterNavigation({
           </button>
 
           {/* Slide Indicator & Dots */}
-          <div className="flex flex-col items-center justify-center flex-1 min-w-0 px-1">
-            <div className="flex items-center gap-1.5 mb-1">
-              <span className="font-mono text-[11px] font-black text-sky-800 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">
+          <div className="flex flex-col items-center justify-center flex-1 min-w-0 px-1 sm:px-4">
+            <div className="flex items-center gap-1.5 sm:gap-2 mb-1">
+              <span className="font-mono text-[11px] sm:text-xs font-black text-sky-800 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">
                 SLIDE {String(activeIndex + 1).padStart(2, '0')}&thinsp;/&thinsp;{String(CHAPTERS.length).padStart(2, '0')}
               </span>
-              <span className="text-[10px] font-bold text-slate-600 truncate max-w-[90px] xs:max-w-[130px]">
+              <span className="text-[10px] sm:text-xs font-bold text-slate-600 truncate max-w-[90px] xs:max-w-[150px] sm:max-w-xs">
                 {CHAPTERS[activeIndex]?.label}
               </span>
             </div>
 
-            <div className="flex items-center gap-1 justify-center overflow-hidden max-w-full">
+            <div className="flex items-center gap-1 sm:gap-1.5 justify-center overflow-hidden max-w-full">
               {CHAPTERS.map((ch, i) => {
                 const isActive = ch.id === activeSection;
                 const isPast = i < activeIndex;
@@ -85,7 +85,7 @@ export default function ChapterNavigation({
                     key={ch.id}
                     onClick={() => onNavigate(ch.id)}
                     style={{
-                      width: isActive ? 16 : 5,
+                      width: isActive ? 18 : 6,
                       height: 5,
                       borderRadius: 2.5,
                       background: isActive ? '#0284c7' : isPast ? '#93c5fd' : '#cbd5e1',
@@ -119,14 +119,15 @@ export default function ChapterNavigation({
                 : {}
             }
             transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-            className={`h-10 px-3.5 xs:px-4 rounded-xl font-black text-xs cursor-pointer transition-all flex items-center gap-1.5 flex-shrink-0 active:scale-95 border ${
+            className={`h-10 px-3.5 xs:px-4 sm:px-5 rounded-xl font-black text-xs cursor-pointer transition-all flex items-center gap-1.5 flex-shrink-0 active:scale-95 border ${
               hasNext
                 ? 'bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white border-sky-400 ring-2 ring-sky-400/50 shadow-lg'
                 : 'bg-slate-200 text-slate-400 border-slate-300 opacity-40 cursor-not-allowed ring-0'
             }`}
-            title="Next Slide"
+            title="Next Slide (SPACE / →)"
           >
             <span className="tracking-wide">NEXT</span>
+            <span className="hidden sm:inline text-[10px] font-mono text-sky-200">(SPACE)</span>
             <span className="text-sm font-black">▶</span>
           </motion.button>
         </div>

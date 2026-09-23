@@ -20,7 +20,7 @@ export function SectionWrapper({ id, children, className = '', dark: _dark = fal
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 1.02 }}
         transition={{ duration: 0.35 }}
-        className="w-full max-w-7xl mx-auto flex flex-col justify-start sm:justify-between h-full min-h-0 overflow-y-auto sm:overflow-hidden overscroll-contain pt-12 sm:pt-3 pb-24 sm:pb-2 hide-scrollbar"
+        className="w-full max-w-7xl mx-auto flex flex-col justify-start sm:justify-between h-full min-h-0 overflow-y-auto sm:overflow-hidden overscroll-contain pt-3 sm:pt-4 pb-24 sm:pb-20 hide-scrollbar"
       >
         {children}
       </motion.div>

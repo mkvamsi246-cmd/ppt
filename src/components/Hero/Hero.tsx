@@ -207,7 +207,7 @@ export default function Hero({ onStart }: HeroProps) {
 
       {/* ═══════════════ MAIN CONTENT ═══════════════ */}
       <motion.div
-        className="relative z-20 flex flex-col items-center justify-start sm:justify-between text-center px-2.5 sm:px-6 max-w-6xl mx-auto w-full h-full overflow-y-auto sm:overflow-hidden hide-scrollbar pt-12 sm:pt-3 pb-24 sm:pb-2 gap-2 sm:gap-3"
+        className="relative z-20 flex flex-col items-center justify-start sm:justify-between text-center px-2.5 sm:px-6 max-w-6xl mx-auto w-full h-full overflow-y-auto sm:overflow-hidden hide-scrollbar pt-4 sm:pt-4 pb-24 sm:pb-20 gap-2 sm:gap-3"
         animate={
           launchPhase === 'zoom'
             ? { scale: 1.1, opacity: 0.55 }
