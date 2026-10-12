@@ -7,8 +7,11 @@ import CrowdManagement from './components/CrowdManagement/CrowdManagement';
 import AdaptiveTraffic from './components/TrafficManagement/AdaptiveTraffic';
 import SmartParking from './components/SmartParking/SmartParking';
 import GreenCorridor from './components/GreenCorridor/GreenCorridor';
+import HospitalCapacity from './components/HospitalCapacity/HospitalCapacity';
 import RiverSafety from './components/RiverSafety/RiverSafety';
+import DroneFireDetection from './components/DroneFireDetection/DroneFireDetection';
 import MissingPersons from './components/MissingPersons/MissingPersons';
+import ObjectAndFallDetection from './components/ObjectAndFallDetection/ObjectAndFallDetection';
 import { GISCommandCenter, CitizenApp } from './components/GISCommandCenter/GISComponents';
 import { FinalSection } from './components/FinalSections/FinalSections';
 import ChapterNavigation from './components/ChapterNavigation/ChapterNavigation';
@@ -128,10 +131,16 @@ export default function App() {
         return <SmartParking />;
       case 'corridor':
         return <GreenCorridor />;
+      case 'hospital':
+        return <HospitalCapacity />;
       case 'river':
         return <RiverSafety />;
+      case 'dronefire':
+        return <DroneFireDetection />;
       case 'missing':
         return <MissingPersons />;
+      case 'incidentai':
+        return <ObjectAndFallDetection />;
       case 'gis':
         return <GISCommandCenter />;
       case 'citizen':
